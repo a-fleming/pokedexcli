@@ -8,14 +8,14 @@ import (
 )
 
 type Config struct {
-	Next     string
-	Previous string
+	Next     *string
+	Previous *string
 }
 
 type locationAreaQuery struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
+	Count    int     `json:"count"`
+	Next     *string `json:"next"`
+	Previous *string `json:"previous"`
 	Results  []struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
@@ -25,8 +25,8 @@ type locationAreaQuery struct {
 func startRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 	config := Config{
-		Next:     "https://pokeapi.co/api/v2/location-area/?limit=20&offset=0",
-		Previous: "",
+		Next:     nil,
+		Previous: nil,
 	}
 
 	for {
