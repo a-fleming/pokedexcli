@@ -12,7 +12,7 @@ type Config struct {
 	Previous *string
 }
 
-type locationAreaQuery struct {
+type ResponseLocations struct {
 	Count    int     `json:"count"`
 	Next     *string `json:"next"`
 	Previous *string `json:"previous"`
