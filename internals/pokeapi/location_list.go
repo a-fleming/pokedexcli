@@ -16,8 +16,7 @@ func (c *Client) ListLocations(pageURL *string) (ResponseLocations, error) {
 		return ResponseLocations{}, err
 	}
 
-	client := &http.Client{}
-	res, err := client.Do(req)
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return ResponseLocations{}, err
 	}
