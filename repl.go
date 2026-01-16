@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"pokedexcli/internals/pokeapi"
+	"pokedexcli/internal/pokeapi"
 	"strings"
 )
 
