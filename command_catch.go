@@ -14,8 +14,8 @@ func commandCatch(cfg *config, args ...string) error {
 	pokemonName := args[0]
 	pokemon, err := cfg.pokeapiClient.GetPokemon(pokemonName)
 	if err != nil {
-		fmt.Printf("Unknown Pokemon '%s'\n", pokemonName)
-		return err
+		//fmt.Printf("Unknown Pokemon '%s'\n", pokemonName)
+		return fmt.Errorf("Unknown Pokemon '%s'", pokemonName)
 	}
 	fmt.Printf("Throwing a Pokeball at %s...\n", pokemonName)
 	catchThresholdVal := float64(pokemon.BaseExperience) * catchThresholdPct
