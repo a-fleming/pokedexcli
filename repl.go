@@ -10,8 +10,8 @@ import (
 
 type config struct {
 	pokeapiClient    pokeapi.Client
-	NextLocationsURL *string
-	PrevLocationsURL *string
+	nextLocationsURL *string
+	prevLocationsURL *string
 }
 
 func startRepl(cfg *config) {
@@ -25,14 +25,18 @@ func startRepl(cfg *config) {
 			continue
 		}
 		commandName := cleaned[0]
+		commandArgs := []string{}
+		if length := len(cleaned); length > 1 {
+			commandArgs = cleaned[1:length]
+		}
 		command, ok := getCommands()[commandName]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := command.callback(cfg)
+		err := command.callback(cfg, commandArgs...)
 		if err != nil {
-			fmt.Println(err)
+			fmt.Printf("Error: %s\n", err)
 		}
 	}
 }
@@ -46,7 +50,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -55,6 +59,11 @@ func getCommands() map[string]cliCommand {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
+		},
+		"explore": {
+			name:        "explore <location_name>",
+			description: "Explore a location",
+			callback:    commandExplore,
 		},
 		"map": {
 			name:        "map",

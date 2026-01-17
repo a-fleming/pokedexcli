@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) ListLocations(pageURL *string) (ResponseLocations, error) {
+func (c *Client) ListLocations(pageURL *string) (LocationListResponse, error) {
 	url := baseURL + "/location-area/?offset=0&limit=20"
 	if pageURL != nil {
 		url = *pageURL
@@ -15,26 +15,26 @@ func (c *Client) ListLocations(pageURL *string) (ResponseLocations, error) {
 	if !exists {
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
-			return ResponseLocations{}, err
+			return LocationListResponse{}, err
 		}
 
 		res, err := c.httpClient.Do(req)
 		if err != nil {
-			return ResponseLocations{}, err
+			return LocationListResponse{}, err
 		}
 		defer res.Body.Close()
 
 		data, err = io.ReadAll(res.Body)
 		if err != nil {
-			return ResponseLocations{}, err
+			return LocationListResponse{}, err
 		}
 		c.pokeCache.Add(url, data)
 	}
 
-	locationsRes := ResponseLocations{}
+	locationsRes := LocationListResponse{}
 	err := json.Unmarshal(data, &locationsRes)
 	if err != nil {
-		return ResponseLocations{}, err
+		return LocationListResponse{}, err
 	}
 	return locationsRes, nil
 }
